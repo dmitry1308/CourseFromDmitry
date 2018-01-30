@@ -1,0 +1,22 @@
+Я тут подумал, что знакомство с ООП будет сложноватым и придумал как мне кажется оптимальное первое задание для перехода с функционального на ООП прграммирование.
+Нужно создать класс Дробь, который должен уметь складывать, вычитать, умножать и делить дроби. При выводе результатадолжен учитывать НОД, чтобы не было 4/6. Должны быть учтены адекватные ограничения на использование класса, например знаменатель не должен быть нулем.
+Класс можно назвать Fraction он должен имплементировать интерфейс IFraction
+
+public interface IFraction {
+    Fraction plus(Fraction fraction);
+
+    Fraction minus(Fraction fraction);
+
+    Fraction multiply(Fraction fraction);
+
+    Fraction divide(Fraction fraction);
+}
+
+пример использования:
+
+Fraction f1 = new Fraction(1, 3);
+Fraction f2 = new Fraction(1, 3);
+Fraction res = f1.plus(f2);
+assertNotNull(res);
+assertEquals(2, res.getNumerator());
+assertEquals(3, res.getDenominator());
