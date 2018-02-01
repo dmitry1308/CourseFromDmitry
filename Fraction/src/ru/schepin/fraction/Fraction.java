@@ -7,7 +7,7 @@ public class Fraction implements IFraction {
     public Fraction(int numerator, int denominator) {
 
         if (denominator == 0 || numerator == 0) {
-            throw new ZeroException("  Какое-то число равно 0!");
+            throw new ZeroException("Какое-то число равно 0!");
         }
         this.numerator = numerator;
         this.denominator = denominator;
@@ -16,28 +16,43 @@ public class Fraction implements IFraction {
 
     public Fraction plus(Fraction fraction) {
         int newDenominator = findCommonDivisor(this.denominator, fraction.denominator);
-        int newNumerator = (this.numerator * (newDenominator / this.denominator) + (fraction.numerator * (newDenominator / fraction.denominator)));
-        int greatestCommonDivisor = findGreatestCommonDivisor(newDenominator, newNumerator);
 
 
-        return new Fraction(newNumerator / greatestCommonDivisor, newDenominator / greatestCommonDivisor);
+        int newNumerator = (this.numerator * (newDenominator / this.denominator) +
+                (fraction.numerator * (newDenominator / fraction.denominator)));
+
+        return divisionByCommonFactor(newNumerator, newDenominator,
+                findGreatestCommonDivisor(newDenominator, newNumerator));
     }
 
     public Fraction minus(Fraction fraction) {
         int newDenominator = findCommonDivisor(this.denominator, fraction.denominator);
-        int newNumerator = (this.numerator * (newDenominator / this.denominator) - (fraction.numerator * (newDenominator / fraction.denominator)));
 
-        return new Fraction(newNumerator, newDenominator);
+        int newNumerator = (this.numerator * (newDenominator / this.denominator) -
+                (fraction.numerator * (newDenominator / fraction.denominator)));
+
+        if (newNumerator == 0) {
+            throw new ZeroException("Результат вычисления = 0");
+        }
+
+        return divisionByCommonFactor(newNumerator, newDenominator,
+                findGreatestCommonDivisor(newDenominator, newNumerator));
     }
 
     public Fraction multiply(Fraction fraction) {
-        return new Fraction
-                (this.numerator * fraction.numerator, this.denominator * fraction.denominator);
+        int newNumerator = this.numerator * fraction.numerator;
+        int newDenominator = this.denominator * fraction.denominator;
+
+        return divisionByCommonFactor(newNumerator, newDenominator,
+                findGreatestCommonDivisor(newDenominator, newNumerator));
     }
 
     public Fraction divide(Fraction fraction) {
-        return new Fraction
-                (this.numerator * fraction.denominator, this.denominator * fraction.numerator);
+        int newNumerator = this.numerator * fraction.denominator;
+        int newDenominator = this.denominator * fraction.numerator;
+
+        return divisionByCommonFactor(newNumerator, newDenominator,
+                findGreatestCommonDivisor(newDenominator, newNumerator));
     }
 
     private static int findCommonDivisor(int a, int b) {
@@ -52,7 +67,7 @@ public class Fraction implements IFraction {
         return max;
     }
 
-    public static int findGreatestCommonDivisor(int a, int b) {
+    private static int findGreatestCommonDivisor(int a, int b) {
 
         while (a % b != 0) {
             int c = a % b;
@@ -61,6 +76,10 @@ public class Fraction implements IFraction {
         }
 
         return b;
+    }
+
+    private Fraction divisionByCommonFactor(int a, int b, int commonDivisor) {
+        return new Fraction(a / commonDivisor, b / commonDivisor);
     }
 
 
